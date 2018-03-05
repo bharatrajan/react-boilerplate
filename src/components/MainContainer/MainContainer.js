@@ -2,20 +2,43 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, Route, withRouter } from 'react-router-dom';
 
+import { getAllData } from '../../api/api';
+
 import View1 from '../View1/View1';
 import View2 from '../View2/View2';
 import View3 from '../View3/View3';
 import View4 from '../View4/View4';
+
 import './MainContainer.css';
 
 class MainContainer extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+    this.errorHandler = this.errorHandler.bind(this);
+    this.successHandler = this.successHandler.bind(this);
+  }
+
+  componentDidMount = () => {
+    getAllData()
+      .then(this.successHandler)
+      .catch(this.errorHandler)
+  }; 
+
+  successHandler = data => {
+    this.setState({ data : data })
+  }
+
+  errorHandler = error => {
+    this.setState({ error : error })
+  }
+
+render() {
     return (
       <div className="MainContainer">
         <nav className="navbar navbar-inverse">
           <div className="container-fluid">
             <div className="navbar-header">
-              <a className="navbar-brand" href="#">WebSiteName</a>
+              <Link className="navbar-brand" to="/">React Boilerplate</Link>
             </div>
             <ul className="nav navbar-nav">
               <li><Link to="/">View1</Link></li>
